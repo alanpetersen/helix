@@ -79,8 +79,8 @@ define helix::proxy_instance (
     }
   }
 
-  # if broker is going to listen on SSL port, ensure that certificate is generated
-  if $p4brokerport =~ /^ssl:/ {
+  # if proxy is going to listen on SSL port, ensure that certificate is generated
+  if $p4proxyport =~ /^ssl:/ {
     exec { "${title}-Gc":
       command     => '/usr/sbin/p4p -Gc',
       user        => $osuser,
