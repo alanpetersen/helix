@@ -1,0 +1,19 @@
+#-------------------------------------------------------------------------------
+# p4dctl configuration file for Perforce Broker
+# managed by puppet -- do not edit
+
+p4broker <%= @instance_name %>
+{
+    Owner  	= <%= @osuser %>
+    Execute	=	/usr/sbin/p4broker
+    Umask	  =	077
+
+    Environment
+    {
+        P4BROKEROPTIONS	=	"-c <%= @directory %>/broker.conf"
+        P4SSLDIR	= 	ssl
+        PATH	=	/bin:/usr/bin:/usr/local/bin
+    }
+
+    Enabled	= <%= @enabled %>
+}

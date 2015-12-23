@@ -1,0 +1,21 @@
+#-------------------------------------------------------------------------------
+# p4broker configuration file
+# managed by puppet -- do not edit
+
+target      = <%= @p4brokertarget %>;
+listen      = <%= @p4brokerport %>;
+directory   = <%= @directory %>;
+logfile     = <%= @logfile %>;
+debug-level = server=<%= @debuglevel %>;
+admin-name  = <%= @adminname %>;
+admin-phone = <%= @adminphone %>;
+admin-email = <%= @adminemail %>;
+
+# the following commands are generated from the commands parameter
+# these will also be maintained by puppet
+
+<%- @commands.each do |command| -%>
+######
+<%= command %>
+
+<%- end -%>

@@ -1,0 +1,24 @@
+#-------------------------------------------------------------------------------
+# p4dctl configuration file for Perforce Server
+# managed by puppet -- do not edit
+
+p4d <%= @instance_name %>
+{
+    Owner    =	<%= @osuser %>
+    Execute  =	/opt/perforce/sbin/p4d
+    Umask    =	077
+
+    # Enabled by default.
+    Enabled  =	<%= @enabled %>
+
+    Environment
+    {
+        P4ROOT    =	<%= @p4root %>
+        P4LOG     = <%= @p4log %>
+        P4JOURNAL =	<%= @p4journal %>
+        P4PORT    =	<%= @p4port %>
+        P4SSLDIR  =	<%= @p4ssl %>
+        PATH      =	/bin:/usr/bin:/usr/local/bin:/opt/perforce/bin:/opt/perforce/sbin
+    }
+
+}

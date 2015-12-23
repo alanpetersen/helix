@@ -1,0 +1,21 @@
+#-------------------------------------------------------------------------------
+# p4dctl configuration file for Perforce Proxy
+# managed by puppet -- do not edit
+
+p4p <%= @instance_name %>
+{
+    Owner  	= <%= @osuser %>
+    Execute	=	/usr/sbin/p4p
+    Umask	  =	077
+
+    Environment
+    {
+      P4PCACHE=<%= @cachedir %>
+      P4TARGET=<%= @p4proxytarget %>
+      P4PORT=<%= @p4proxyport %>
+      P4LOG=<%= @logfile %>
+      PATH=/bin:/usr/bin:/usr/local/bin
+    }
+
+    Enabled	= 	<%= @enabled %>
+}
