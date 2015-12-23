@@ -1,7 +1,7 @@
 require 'spec_helper_acceptance'
 
 describe 'helix::broker class' do
-  context 'with required parameters only' do
+  context 'with required parameters only, non ssl' do
     # Using puppet_apply as a helper
     it 'should work idempotently with no errors' do
       pp = <<-EOS
@@ -22,7 +22,7 @@ $commands = [
 ]
 
 helix::broker_instance { 'broker1':
-  p4brokerport   => 'ssl::1667',
+  p4brokerport   => '1667',
   p4brokertarget => 'localhost:1666',
   commands       => $commands,
 }
@@ -43,4 +43,25 @@ EOS
     end
 
   end
+
+  context "with required parameters only, ssl enabled" do
+    pp = <<-EOS
+include helix::broker
+
+helix::broker_instance { 'broker2':
+p4brokerport   => 'ssl::4667',
+p4brokertarget => 'localhost:1666',
+}
+
+EOS
+    it {
+      apply_manifest(pp, :catch_failures => true)
+    }
+
+    describe port(4667) do
+      it { should be_listening }
+    end
+
+  end
+
 end

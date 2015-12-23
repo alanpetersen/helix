@@ -72,7 +72,7 @@ define helix::server_instance (
   }
 
   # manage the p4ssl directory if it is the default and not already managed
-  if $p4ssl == "/opt/perforce/servers/${title}/ssl" and !defined(File[$p4ssl]) {
+  if $p4ssl == "/opt/perforce/servers/${title}/ssl" {
     if !defined(File["${title}_serverdir"]) {
       file { "${title}_serverdir":
         ensure  => directory,
@@ -80,12 +80,33 @@ define helix::server_instance (
         require => File["${title}_p4dctl_conf"],
       }
     }
+  }
 
-    file { "${title}_p4ssl":
+  if !defined(File[$p4ssl]) {
+    file { $p4ssl:
       ensure  => directory,
-      path    => $p4ssl,
+      mode    => '0700',
       require => File["${title}_p4dctl_conf"],
       before  => Service["${title}_p4d_service"],
+    }
+  }
+
+  # if server is going to listen on SSL port, ensure that certificate is generated
+  if $p4port =~ /^ssl:/ {
+    exec { "${title}-Gc":
+      command     => '/usr/sbin/p4d -Gc',
+      user        => $osuser,
+      environment => "P4SSLDIR=${p4ssl}",
+      creates     => "${p4ssl}/privatekey.txt",
+      require     => File[$p4ssl],
+      notify      => Exec["${title}-Gf"],
+      before      => Service["${title}_p4d_service"],
+    }
+    exec { "${title}-Gf":
+      command     => '/usr/sbin/p4d -Gf',
+      user        => $osuser,
+      environment => "P4SSLDIR=${p4ssl}",
+      refreshonly => true,
     }
   }
 
@@ -116,6 +137,9 @@ define helix::server_instance (
     }
   }
 
+  # manage the service. The actual service is `perforce-p4dctl`, but the p4dctl command
+  # is used to manage the various service instances. it provides start/stop/restart/status
+  # subcommands to manage the instance
   service { "${title}_p4d_service":
     ensure  => $ensure,
     start   => "/usr/sbin/p4dctl start ${instance_name}",

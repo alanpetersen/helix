@@ -103,6 +103,9 @@ define helix::broker_instance (
     content => template('helix/p4broker_conf.erb'),
   }
 
+  # manage the service. The actual service is `perforce-p4dctl`, but the p4dctl command
+  # is used to manage the various service instances. it provides start/stop/restart/status
+  # subcommands to manage the instance
   service { "${title}_p4broker_service":
     ensure  => $ensure,
     start   => "/usr/sbin/p4dctl start ${instance_name}",
