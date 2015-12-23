@@ -22,7 +22,7 @@ $commands = [
 ]
 
 helix::broker_instance { 'broker1':
-  p4brokerport   => '1667',
+  p4brokerport   => 'ssl::1667',
   p4brokertarget => 'localhost:1666',
   commands       => $commands,
 }

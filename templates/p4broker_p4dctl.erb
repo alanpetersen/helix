@@ -11,7 +11,7 @@ p4broker <%= @instance_name %>
     Environment
     {
         P4BROKEROPTIONS	=	"-c <%= @directory %>/broker.conf"
-        P4SSLDIR	= 	ssl
+        P4SSLDIR	= 	<%= @p4ssl %>
         PATH	=	/bin:/usr/bin:/usr/local/bin
     }
 

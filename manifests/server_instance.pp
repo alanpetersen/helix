@@ -72,7 +72,7 @@ define helix::server_instance (
   }
 
   # manage the p4ssl directory if it is the default and not already managed
-  if $p4ssl == "/opt/perforce/servers/${title}/depots" and !defined(File[$p4ssl]) {
+  if $p4ssl == "/opt/perforce/servers/${title}/ssl" and !defined(File[$p4ssl]) {
     if !defined(File["${title}_serverdir"]) {
       file { "${title}_serverdir":
         ensure  => directory,
@@ -83,7 +83,7 @@ define helix::server_instance (
 
     file { "${title}_p4ssl":
       ensure  => directory,
-      path    => $ssl,
+      path    => $p4ssl,
       require => File["${title}_p4dctl_conf"],
       before  => Service["${title}_p4d_service"],
     }
@@ -107,7 +107,7 @@ define helix::server_instance (
     }
   }
 
-  # manage the log diretory if it is the default and not already managed
+  # manage the log directory if it is the default and not already managed
   if $p4log == "/var/log/perforce/${title}_proxy.log" and !defined(File['/var/log/perforce']) {
     file { '/var/log/perforce':
       ensure  => directory,

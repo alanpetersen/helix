@@ -18,13 +18,13 @@ EOS
       apply_manifest(pp, :catch_changes  => true)
     end
 
-    # describe command('/usr/sbin/p4p -V') do
-    #   its(:stdout) { should match /Perforce - The Fast Software Configuration Management System/ }
-    # end
-    #
-    # describe port(1668) do
-    #   it { should be_listening }
-    # end
+    describe command('/usr/sbin/p4d -V') do
+      its(:stdout) { should match /Perforce - The Fast Software Configuration Management System/ }
+    end
+
+    describe port(1666) do
+      it { should be_listening }
+    end
 
   end
 end

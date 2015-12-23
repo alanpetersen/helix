@@ -3,6 +3,7 @@ define helix::broker_instance (
   $p4brokerport,
   $p4brokertarget,
   $directory     = "/opt/perforce/servers/${title}",
+  $p4ssl         = "/opt/perforce/servers/${title}/ssl",
   $logfile       = "/var/log/perforce/${title}_broker.log",
   $debuglevel    = '1',
   $adminname     = 'Perforce Admins',
@@ -49,12 +50,51 @@ define helix::broker_instance (
     require => Package[$helix::broker::pkgname],
   }
 
-  # manage the parent directory if it is the default
-  if $directory == "/opt/perforce/servers/${title}" {
+  # manage the parent directory if it is the default and not already managed
+  if $directory == "/opt/perforce/servers/${title}" and !defined(File["${title}_conf_dir"]) {
     file { "${title}_conf_dir":
       ensure  => directory,
       path    => $directory,
       require => File["${title}_p4dctl_conf"],
+    }
+  }
+
+  # manage the p4ssl directory if it is the default and not already managed
+  if $p4ssl == "/opt/perforce/servers/${title}/ssl" {
+    if !defined(File["${title}_conf_dir"]) {
+      file { "${title}_conf_dir":
+        ensure  => directory,
+        path    => "/opt/perforce/servers/${title}",
+        require => File["${title}_p4dctl_conf"],
+      }
+    }
+  }
+
+  if !defined(File[$p4ssl]) {
+    file { $p4ssl:
+      ensure  => directory,
+      mode    => '0700',
+      require => File["${title}_p4dctl_conf"],
+      before  => Service["${title}_p4broker_service"],
+    }
+  }
+
+  # if broker is going to listen on SSL port, ensure that certificate is generated
+  if $p4brokerport =~ /^ssl:/ {
+    exec { "${title}-Gc":
+      command     => '/usr/sbin/p4broker -Gc',
+      user        => $osuser,
+      environment => "P4SSLDIR=${p4ssl}",
+      creates     => "${p4ssl}/privatekey.txt",
+      require     => File[$p4ssl],
+      notify      => Exec["${title}-Gf"],
+      before      => Service["${title}_p4broker_service"],
+    }
+    exec { "${title}-Gf":
+      command     => '/usr/sbin/p4broker -Gf',
+      user        => $osuser,
+      environment => "P4SSLDIR=${p4ssl}",
+      refreshonly => true,
     }
   }
 
