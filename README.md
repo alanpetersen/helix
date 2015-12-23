@@ -90,7 +90,7 @@ class { 'helix::proxy':
 #### helix::server_instance
 A p4d instance can be configured using the `helix::server_instance` type.
 
-![](doc/single-server.png)
+<img src="https://www.perforce.com/perforce/doc.current/manuals/p4sag/images/single-server.png" width='300' />
 
 At a minimum, the p4port must be specified.
 
@@ -106,7 +106,7 @@ helix::server_instance { 'server1':
 
 The following attributes are supported:
 
-* p4port (required) - the port for the server. This should be in P4PORT format **protocol:hostname:port**, for example `ssl::1666`
+* p4port (required) - the port for the server. This should be in P4PORT format **`protocol:hostname:port`**, for example `ssl::1666`
 * p4root (default /opt/perforce/servers/${title}/root) - location for the metadata databases
 * p4depots (default /opt/perforce/servers/${title}/depots) - location for the depot root
 * p4log (default /var/log/perforce/${title}_server.log) - location of the server log file
@@ -135,8 +135,8 @@ helix::broker_instance { 'broker1':
 
 The following attributes are supported:
 
-* p4brokerport (required) - listen port for the broker. This should be in P4PORT format **protocol:hostname:port**, for example `ssl::1666`
-* p4brokertarget (required) - target port -- the port of the p4d -- that the broker will use. This should be in P4PORT format **protocol:hostname:port**, for example `perforce:1666`
+* p4brokerport (required) - listen port for the broker. This should be in P4PORT format **`protocol:hostname:port`**, for example `ssl::1666`
+* p4brokertarget (required) - target port -- the port of the p4d -- that the broker will use. This should be in P4PORT format **`protocol:hostname:port`**, for example `perforce:1666`
 * directory (default /opt/perforce/servers/${title}) - directory that will contain the broker configuration file
 * p4ssl (default /opt/perforce/servers/${title}/ssl) - directory that contains the ssl certificate and key
 * logfile (default /var/log/perforce/${title}_broker.log) - location of the log file for the server
@@ -156,7 +156,7 @@ The following attributes are supported:
 #### helix::proxy_instance
 A p4proxy instance can be configured using the `helix::proxy_instance` type.
 
-![](doc/proxy.jpg)
+<img src="https://www.perforce.com/perforce/doc.current/manuals/p4dist/images/proxy.png" width='500' />
 
 At a minimum, the p4proxyport and p4proxytarget parameters must be specified.
 
@@ -173,8 +173,8 @@ helix::proxy_instance { 'proxy1':
 
 The following attributes are supported:
 
-* p4proxyport (required) - listen port for the broker. This should be in P4PORT format
-* p4proxytarget (required) - listen port for the broker. This should be in P4PORT format
+* p4proxyport (required) - listen port for the broker. This should be in P4PORT format **`protocol:hostname:port`**, for example `1666`
+* p4proxytarget (required) - listen port for the broker. This should be in P4PORT format **`protocol:hostname:port`**, for example `perforce:1666`
 * cachedir (default /opt/perforce/servers/${title}/cache) - directory where depot files will be cached
 * p4ssl (default /opt/perforce/servers/${title}/ssl) - directory that contains the ssl certificate and key
 * logfile (default /var/log/perforce/${title}_proxy.log) - location of the log file for the server
