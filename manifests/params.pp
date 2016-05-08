@@ -17,6 +17,7 @@ class helix::params {
       }
       $perforce_repo_name = 'perforce'
       $yum_baseurl        = "${perforce_package_url}/yum/rhel/${::operatingsystemmajrelease}/x86_64"
+      $p4dctl             = '/usr/sbin/p4dctl'
     }
     'debian': {
       if !($::lsbdistcodename in ['precise','trusty']) {
@@ -24,6 +25,7 @@ class helix::params {
       }
       $p4_distro_location = "${perforce_package_url}/apt/ubuntu"
       $p4_distro_release  = $::lsbdistcodename
+      $p4dctl             = '/usr/bin/p4dctl'
     }
     default: {
       fail("Sorry, ${::osfamily} is not currently suppported by the helix module")

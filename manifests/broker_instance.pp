@@ -17,12 +17,27 @@ define helix::broker_instance (
   $osgroup       = 'perforce',
   $ensure        = 'running',
   $enabled       = true,
+  $p4dctl        = undef,
 ) {
 
   $instance_name = $title
 
   if !defined(Class['helix::broker']) {
     fail('you must declare helix::broker before declaring instances')
+  }
+
+  if !is_bool($enabled) {
+    fail('enabled parameter must be a boolean')
+  }
+
+  if !($ensure in ['running', 'stopped']) {
+    fail('ensure must be set to either running or stopped')
+  }
+
+  if $p4dctl {
+    $p4dctl_path = $p4dctl
+  } else {
+    $p4dctl_path = $helix::params::p4dctl
   }
 
   File {
@@ -108,10 +123,10 @@ define helix::broker_instance (
   # subcommands to manage the instance
   service { "${title}_p4broker_service":
     ensure  => $ensure,
-    start   => "/usr/sbin/p4dctl start ${instance_name}",
-    stop    => "/usr/sbin/p4dctl stop ${instance_name}",
-    restart => "/usr/sbin/p4dctl restart ${instance_name}",
-    status  => "/usr/sbin/p4dctl status ${instance_name}",
+    start   => "${p4dctl_path} start ${instance_name}",
+    stop    => "${p4dctl_path} stop ${instance_name}",
+    restart => "${p4dctl_path} restart ${instance_name}",
+    status  => "${p4dctl_path} status ${instance_name}",
     require => File["${title}_broker.conf"],
   }
 

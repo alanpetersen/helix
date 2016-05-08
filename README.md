@@ -116,6 +116,7 @@ The following attributes are supported:
 * osgroup (default perforce) - group owner of the server
 * ensure (default running) - state of the service [running, stopped]
 * enabled (default true) - flag indicating whether or not the service should be enabled
+* p4dctl (defaulted to OS-specific path) - path to the p4dctl executable
 
 #### helix::broker_instance
 A p4broker instance can be configured using the `helix::broker_instance` type.
@@ -152,6 +153,7 @@ The following attributes are supported:
 * osgroup (default perforce) - group owner of the server
 * ensure (default running) - state of the service [running, stopped]
 * enabled (default true) - flag indicating whether or not the service should be enabled
+* p4dctl (defaulted to OS-specific path) - path to the p4dctl executable
 
 #### helix::proxy_instance
 A p4proxy instance can be configured using the `helix::proxy_instance` type.
@@ -182,6 +184,7 @@ The following attributes are supported:
 * osgroup (default perforce) - group owner of the server
 * ensure (default running) - state of the service [running, stopped]
 * enabled (default true) - flag indicating whether or not the service should be enabled
+* p4dctl (defaulted to OS-specific path) - path to the p4dctl executable
 
 
 ## Limitations
