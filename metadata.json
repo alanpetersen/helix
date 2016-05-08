@@ -2,7 +2,7 @@
   "name": "alanpetersen-helix",
   "version": "0.2.0",
   "author": "alanpetersen",
-  "summary": "Manages various Perforce Helix components",
+  "summary": "Manages Perforce Helix components: client, server, proxy and broker",
   "license": "Apache-2.0",
   "source": "https://github.com/alanpetersen/helix",
   "project_page": "https://github.com/alanpetersen/helix",
