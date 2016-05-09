@@ -19,17 +19,21 @@ class helix::redhat (
   $perforce_repo_name = $helix::params::perforce_repo_name,
 ) inherits helix::params {
 
-  yumrepo { $perforce_repo_name:
-    baseurl  => $yum_baseurl,
-    descr    => 'Perforce Repo',
-    enabled  => '1',
-    gpgcheck => '1',
-    gpgkey   => $pubkey_url,
+  if !defined(Yumrepo[$perforce_repo_name]) {
+    yumrepo { $perforce_repo_name:
+      baseurl  => $yum_baseurl,
+      descr    => 'Perforce Repo',
+      enabled  => '1',
+      gpgcheck => '1',
+      gpgkey   => $pubkey_url,
+    }
   }
 
-  package { $pkgname:
-    ensure  => installed,
-    require => Yumrepo[$perforce_repo_name],
+  if !defined(Package[$pkgname]) {
+    package { $pkgname:
+      ensure  => installed,
+      require => Yumrepo[$perforce_repo_name],
+    }
   }
 
 }

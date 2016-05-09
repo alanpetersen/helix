@@ -1,5 +1,8 @@
+## 2016-05-08 - Release 0.2.2
+Updated redhat.pp class to check for existence of Perforce yum configuration 
+
 ## 2016-05-08 - Release 0.2.1
-Updated debian.pp class to check for existence of Perforce apt configuration 
+Updated debian.pp class to check for existence of Perforce apt configuration
 
 ## 2016-05-08 - Release 0.2.0
 A few updates to address some issues with this module and the latest version of Perforce Helix.
