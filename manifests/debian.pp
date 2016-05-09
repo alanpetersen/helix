@@ -23,27 +23,33 @@ class helix::debian (
 
   include apt
 
-  apt::key { 'perforce-key':
-    ensure => present,
-    id     => $p4_key_fingerprint,
-    source => $pubkey_url,
+  if !defined(Apt::Key['perforce-key']) {
+    apt::key { 'perforce-key':
+      ensure => present,
+      id     => $p4_key_fingerprint,
+      source => $pubkey_url,
+    }
   }
 
-  apt::source { 'perforce-apt-config':
-    comment  => 'This is the Perforce debian distribution configuration file',
-    location => $p4_distro_location,
-    release  => $p4_distro_release,
-    repos    => 'release',
-    require  => Apt::Key['perforce-key'],
-    include  => {
-      'src' => false,
-      'deb' => true,
-    },
+  if !defined(Apt::Source['perforce-apt-config']) {
+    apt::source { 'perforce-apt-config':
+      comment  => 'This is the Perforce debian distribution configuration file',
+      location => $p4_distro_location,
+      release  => $p4_distro_release,
+      repos    => 'release',
+      require  => Apt::Key['perforce-key'],
+      include  => {
+        'src' => false,
+        'deb' => true,
+      },
+    }
   }
 
-  package { $pkgname:
-    ensure  => installed,
-    require => Exec['apt_update'],
+  if !defined(Package[$pkgname]) {
+    package { $pkgname:
+      ensure  => installed,
+      require => Exec['apt_update'],
+    }
   }
 
 }
