@@ -13,9 +13,7 @@
 class helix::server (
   $pkgname = $helix::params::helix_p4d_pkg,
 ) inherits helix::params {
-
   helix::package { $pkgname:
     pkgname => $pkgname,
   }
-
 }

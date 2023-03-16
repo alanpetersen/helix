@@ -12,10 +12,8 @@
 #
 class helix::proxy (
   $pkgname = $helix::params::helix_proxy_pkg,
-) inherits helix::params  {
-
+) inherits helix::params {
   helix::package { $pkgname:
     pkgname => $pkgname,
   }
-
 }

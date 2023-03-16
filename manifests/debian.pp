@@ -14,13 +14,12 @@
 # * `p4_distro_release`
 #
 class helix::debian (
-  $pkgname,
-  $pubkey_url            = $helix::params::pubkey_url,
-  $p4_key_fingerprint    = $helix::params::p4_key_fingerprint,
-  $p4_distro_location    = $helix::params::p4_distro_location,
-  $p4_distro_release     = $helix::params::p4_distro_release,
+  String $pkgname,
+  String $pubkey_url           = $helix::params::pubkey_url,
+  String $p4_key_fingerprint   = $helix::params::p4_key_fingerprint,
+  String $p4_distro_location   = $helix::params::p4_distro_location,
+  String $p4_distro_release    = $helix::params::p4_distro_release,
 ) inherits helix::params {
-
   include apt
 
   if !defined(Apt::Key['perforce-key']) {
@@ -51,5 +50,4 @@ class helix::debian (
       require => Exec['apt_update'],
     }
   }
-
 }

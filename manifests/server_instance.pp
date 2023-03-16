@@ -1,18 +1,32 @@
+# @summary Defines a Helix server instance.
+#
+# @param p4port [String]: The Perforce server port number (e.g., "1666").
+# @param p4root [String]: The root directory of the Perforce server instance (default: "/opt/perforce/servers/<instance_name>/root").
+# @param p4depots [String]: The depots directory of the Perforce server instance (default: "/opt/perforce/servers/<instance_name>/depots").
+# @param p4log [String]: The path to the Perforce server log file (default: "/var/log/perforce/<instance_name>_server.log").
+# @param p4journal [String]: The path to the Perforce server journal file (default: "/opt/perforce/servers/<instance_name>/checkpoints/journal").
+# @param p4ssl [String]: The path to the Perforce server SSL directory (default: "/opt/perforce/servers/<instance_name>/ssl").
+# @param osuser [String]: The name of the user who owns the Perforce server instance files (default: "perforce").
+# @param osgroup [String]: The name of the group that owns the Perforce server instance files (default: "perforce").
+# @param ensure [String]: Whether the service should be running or stopped (default: "running").
+# @param enabled [Boolean]: Whether the instance should be enabled (default: true).
+# @param p4dctl Optional[[String]]: The path to the `p4dctl` command (default: `undef`).
+#
+# @return None
 #
 define helix::server_instance (
-  $p4port,
-  $p4root        = "/opt/perforce/servers/${title}/root",
-  $p4depots      = "/opt/perforce/servers/${title}/depots",
-  $p4log         = "/var/log/perforce/${title}_server.log",
-  $p4journal     = "/opt/perforce/servers/${title}/checkpoints/journal",
-  $p4ssl         = "/opt/perforce/servers/${title}/ssl",
-  $osuser        = 'perforce',
-  $osgroup       = 'perforce',
-  $ensure        = 'running',
-  $enabled       = true,
-  $p4dctl        = undef,
+  String $p4port,
+  String $p4root        = "/opt/perforce/servers/${title}/root",
+  String $p4depots      = "/opt/perforce/servers/${title}/depots",
+  String $p4log         = "/var/log/perforce/${title}_server.log",
+  String $p4journal     = "/opt/perforce/servers/${title}/checkpoints/journal",
+  String $p4ssl         = "/opt/perforce/servers/${title}/ssl",
+  String $osuser        = 'perforce',
+  String $osgroup       = 'perforce',
+  String $ensure        = 'running',
+  Boolean $enabled      = true,
+  Optional[String] $p4dctl = undef,
 ) {
-
   $instance_name = $title
 
   if !defined(Class['helix::server']) {
@@ -163,5 +177,4 @@ define helix::server_instance (
     status  => "${p4dctl_path} status ${instance_name}",
     require => File["${title}_p4dctl_conf"],
   }
-
 }
