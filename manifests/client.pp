@@ -11,11 +11,9 @@
 # value (helix-cli) is provided by the helix_cli_pkg variable in the helix::params class
 #
 class helix::client (
-  $pkgname = $helix::params::helix_cli_pkg,
+  String   $pkgname = $helix::params::helix_cli_pkg,
 ) inherits helix::params {
-
   helix::package { $pkgname:
     pkgname => $pkgname,
   }
-
 }

@@ -1,17 +1,51 @@
+# @summary
+#   This defined type manages a Helix proxy instance. It configures the proxy
+#   instance and manages its service.
 #
+# @param p4proxyport [String]
+#   The port on which the proxy instance listens.
+#
+# @param p4proxytarget [String]
+#   The address of the Helix server that the proxy instance forwards
+#   requests to.
+#
+# @param cachedir [String]
+#   The cache directory used by the proxy instance.
+#
+# @param p4ssl [String]
+#   The SSL directory used by the proxy instance.
+#
+# @param logfile [String]
+#   The path to the proxy instance's log file.
+#
+# @param osuser [String]
+#   The user under which the proxy instance runs.
+#
+# @param osgroup [String]
+#   The group under which the proxy instance runs.
+#
+# @param ensure [String]
+#   The desired state of the proxy instance service. Can be either
+#   'running' or 'stopped'.
+#
+# @param enabled [Boolean]
+#   Whether the proxy instance is enabled or not.
+#
+# @param p4dctl [Optional[String]]
+#   The path to the p4dctl command used to manage the proxy instance
+#   service.
 define helix::proxy_instance (
-  $p4proxyport,
-  $p4proxytarget,
-  $cachedir      = "/opt/perforce/servers/${title}/cache",
-  $p4ssl         = "/opt/perforce/servers/${title}/ssl",
-  $logfile       = "/var/log/perforce/${title}_proxy.log",
-  $osuser        = 'perforce',
-  $osgroup       = 'perforce',
-  $ensure        = 'running',
-  $enabled       = true,
-  $p4dctl        = undef,
+  String $p4proxyport,
+  String $p4proxytarget,
+  String $cachedir    = "/opt/perforce/servers/${title}/cache",
+  String $p4ssl       = "/opt/perforce/servers/${title}/ssl",
+  String $logfile     = "/var/log/perforce/${title}_proxy.log",
+  String $osuser      = 'perforce',
+  String $osgroup     = 'perforce',
+  String $ensure      = 'running',
+  Boolean $enabled    = true,
+  Optional[String] $p4dctl = undef,
 ) {
-
   $instance_name = $title
 
   if !defined(Class['helix::proxy']) {
@@ -125,5 +159,4 @@ define helix::proxy_instance (
     status  => "${p4dctl_path} status ${instance_name}",
     require => File["${title}_p4dctl_conf"],
   }
-
 }

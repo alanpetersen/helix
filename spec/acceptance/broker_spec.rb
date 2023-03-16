@@ -3,7 +3,7 @@ require 'spec_helper_acceptance'
 describe 'helix::broker class' do
   context 'with required parameters only, non ssl' do
     # Using puppet_apply as a helper
-    it 'should work idempotently with no errors' do
+    it 'works idempotently with no errors' do
       pp = <<-EOS
 include helix::broker
 
@@ -30,21 +30,20 @@ helix::broker_instance { 'broker1':
 EOS
 
       # Run it twice and test for idempotency
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes  => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
     describe command('/usr/sbin/p4broker -V') do
-      its(:stdout) { should match /Perforce - The Fast Software Configuration Management System/ }
+      its(:stdout) { is_expected.to match(%r{Perforce - The Fast Software Configuration Management System}) }
     end
 
     describe port(1667) do
-      it { should be_listening }
+      it { is_expected.to be_listening }
     end
-
   end
 
-  context "with required parameters only, ssl enabled" do
+  context 'with required parameters only, ssl enabled' do
     pp = <<-EOS
 include helix::broker
 
@@ -55,13 +54,11 @@ p4brokertarget => 'localhost:1666',
 
 EOS
     it {
-      apply_manifest(pp, :catch_failures => true)
+      apply_manifest(pp, catch_failures: true)
     }
 
     describe port(4667) do
-      it { should be_listening }
+      it { is_expected.to be_listening }
     end
-
   end
-
 end

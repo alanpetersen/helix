@@ -13,12 +13,11 @@
 # * `perforce_repo_name`
 #
 class helix::redhat (
-  $pkgname,
-  $pubkey_url         = $helix::params::pubkey_url,
-  $yum_baseurl        = $helix::params::yum_baseurl,
-  $perforce_repo_name = $helix::params::perforce_repo_name,
+  String $pkgname,
+  String $pubkey_url         = $helix::params::pubkey_url,
+  String $yum_baseurl        = $helix::params::yum_baseurl,
+  String $perforce_repo_name = $helix::params::perforce_repo_name,
 ) inherits helix::params {
-
   if !defined(Yumrepo[$perforce_repo_name]) {
     yumrepo { $perforce_repo_name:
       baseurl  => $yum_baseurl,
@@ -35,5 +34,4 @@ class helix::redhat (
       require => Yumrepo[$perforce_repo_name],
     }
   }
-
 }
